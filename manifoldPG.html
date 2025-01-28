@@ -1,54 +1,745 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html style='font-size:15px !important'>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Manifold Path Guiding</title>
-  <link href="bootstrap-5.1.3-dist/css/bootstrap.css" rel="stylesheet">
-  <link href="css/portfolio-item.css" rel="stylesheet">
-</head>
-<body>
-  <style>
-    body {
-    font: normal 14px Verdana, Arial, sans-serif;
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+
+<style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; --title-bar-height:20px; }
+.mac-os-11 { --title-bar-height:28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
 }
-  </style>
-  <div class="container mt-4">
-        <h4 class="my-6">Manifold Path Guiding for Importance Sampling Specular Chains<span style="font-family: sans-serif"></span> </h4>
-    <hr class="style-two">
-        <p>
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex:2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
 
-          Zhimin Fan*, Pengpei Hong*, Jie Guo, Changqing Zou, Yanwen Guo, and Ling-Qi Yan<br>
-          <i>ACM Transactions on Graphics (Proceedings of SIGGRAPH ASIA 2023) </i>
-      <br>
-          
-          <a href="paper/ManifoldPG_Sept28.pdf">[Paper]</a>
-          <a href="https://sites.cs.ucsb.edu/~lingqi/publications/supplementary_siga23mpg.zip">[Supplementary]</a>
-          <a href="https://github.com/mollnn/manifold-path-guiding">[Code]</a>
-          <br/>
 
-          
-        <img class="img-fluid rounded" src="imgs/ManifoldPG_teaser_480p.jpg" alt="">
-      <br />
-      Complex visual effects such as caustics are often produced by light paths containing multiple consecutive specular vertices (dubbed specular chains), which pose a challenge to unbiased estimation in Monte Carlo rendering. In this work, we study the light transport behavior within a sub-path that is comprised of a specular chain and two non-specular separators. We show that the specular manifolds formed by all the sub-paths could be exploited to provide coherence among sub-paths. By reconstructing continuous energy distributions from historical and coherent sub-paths, seed chains can be generated in the context of importance sampling and converge to admissible chains through manifold walks. We verify that importance sampling the seed chain in the continuous space reaches the goal of importance sampling the discrete admissible specular chain. Based on these observations and theoretical analyses, a progressive pipeline, manifold path guiding, is designed and implemented to importance sample challenging paths featuring long specular chains. To our best knowledge, this is the first general framework for importance sampling discrete specular chains in regular Monte Carlo rendering. Extensive experiments demonstrate that our method outperforms state-of-the-art unbiased solutions with up to 40× variance reduction, especially in typical scenes containing long specular chains and complex visibility.
-      <br />
-      @article{Fan23MPG,
-      title={Manifold Path Guiding for Importance Sampling Specular Chains},
-      author={Fan, Zhimin and Hong, Pengpei and Guo, Jie and Zou, Changqing and Guo, Yanwen and Yan, Ling-Qi},
-      journal={ACM Trans. Graph.},
-      volume={42},
-      number={6},
-      year={2023},
-      month={Dec},
-      issue_date = {December 2023},
-      articleno = {257},
-      numpages = {14},
-      }
-      <br />
-      <br>
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background: inherit; }
+.CodeMirror-scroll { overflow: auto hidden; z-index: 3; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background: inherit; white-space: nowrap; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { height: 100%; outline: 0px; position: relative; box-sizing: content-box; background: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; outline: 0px; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: auto hidden; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 10px; z-index: 3; overflow-y: hidden; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: 0px 0px !important; border: none !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: 0px 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; overflow-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { overflow-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; inset: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+span.cm-underlined { text-decoration: underline; }
+span.cm-strikethrough { text-decoration: line-through; }
+.cm-tw-syntaxerror { color: rgb(255, 255, 255); background-color: rgb(153, 0, 0); }
+.cm-tw-deleted { text-decoration: line-through; }
+.cm-tw-header5 { font-weight: 700; }
+.cm-tw-listitem:first-child { padding-left: 10px; }
+.cm-tw-box { border-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-color: inherit; border-top-width: 0px !important; }
+.cm-tw-underline { text-decoration: underline; }
+@media print {
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+
+
+/* Webfont: HKGrotesk-Light *//* Webfont: HKGrotesk-LightItalic *//* Webfont: HKGrotesk-Regular *//* Webfont: HKGrotesk-Italic *//* Webfont: HKGrotesk-Medium *//* Webfont: HKGrotesk-MediumItalic *//* Webfont: HKGrotesk-Bold *//* Webfont: HKGrotesk-BoldItalic *//* Webfont: OfficeCodePro-Light *//* Webfont: OfficeCodePro-LightItalic *//* Webfont: OfficeCodePro-Regular *//* Webfont: OfficeCodePro-Italic *//* Webfont: OfficeCodePro-Bold *//* Webfont: OfficeCodePro-BoldItalic */html {
+    background: #FFFFFF;
+    /* or
+    text-shadow: #fff 0px 1px 1px;*/
+    text-rendering: geometricPrecision; 
+}
+
+body {
+    font-family: 'HKGrotesk', sans-serif;
+    font-weight: 300;
+    font-size: 1.275em;
+    letter-spacing: 0px; 
+    color: #333333;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: subpixel-antialiased;
+    /*-webkit-text-stroke: 0.45px;
+    // or*/
+    -webkit-text-stroke: 0.45px rgba(51, 51, 51, 0.97);
+    line-height: 1.6em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+strong {
+    font-family: 'HKGrotesk', serif; 
+    font-weight: 500;
+    color: #303336;
+} 
+
+em {
+    font-family: 'HKGrotesk', serif; 
+    font-weight: normal; 
+    font-style: italic;
+} 
+
+mark {
+    color: #000000;
+    background: #D3FFA4;
+    padding: 1px 1px 1px 1px;
+}
+
+div.md-toc {
+    font-family: 'HKGrotesk', serif;
+    font-size: 18px; 
+}
+
+#write{
+    max-width: 710px;
+    margin: 0 auto;
+    padding: 20px 30px 40px 30px;
+    padding-top: 20px;
+    padding-bottom: 100px;
+}
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 40px;
+}
+
+body > *:first-child {
+    margin-top: 0 !important;
+}
+
+body > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+a {
+    color: #DD4C4F;
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: subpixel-antialiased;
+    /*-webkit-text-stroke: 0.45px;
+    // or*/
+    -webkit-text-stroke: 0.55px rgba(221, 76, 79, 0.97);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "HKGrotesk",sans-serif;
+    font-weight: bold;
+    letter-spacing: -0.45px; 
+    word-spacing: 0.5px;
+    position: relative;
+    cursor: text;
+}
+
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    /*background: url("file:///C://Users//mollnn//AppData//Roaming//images/modules/styleguide/para.png") no-repeat 10px center;*/
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+
+h1 {
+    font-size: 2.4em;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: .3em;
+    line-height: 1.2;
+    letter-spacing: -0.45px; 
+    word-spacing: 0.5px;
+}
+h2 {
+    font-size: 1.8em;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: .3em;
+    line-height: 1.2;
+    letter-spacing: -0.45px; 
+    word-spacing: 0.5px;
+}
+h3 {
+    font-size: 1.5em;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: .3em;
+    line-height: 1.2;
+    letter-spacing: -0.45px; 
+    word-spacing: 0.5px;
+}
+h4 {
+    font-size: 1.2em;
+    line-height: 1.2;
+    padding-bottom: .3em;
+    letter-spacing: -0.45px; 
+    word-spacing: 0.5px;}
+h5 {
+    font-size: 1.1em;
+    line-height: 1.2;
+    padding-bottom: .3em;
+    letter-spacing: -0.45px; 
+    word-spacing: 0.5px;}
+h6 {
+    font-size: 1.0em;
+    line-height: 1.2;
+    padding-bottom: .3em;
+    letter-spacing: -0.45px; 
+    word-spacing: 0.5px;
+}
+
+
+  h1 { color: #303336;}
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 { color: #303336;}
+
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    list-style-type: disc 
+    margin: 0.8em 0;
+    margin-top: 1.6rem;
+    margin-bottom: 1.6rem;
+}
+hr {
+    height: 4px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #FFFFFF;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+    border-bottom: 1px solid #ddd;
+}
+
+body > h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+body > h1:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0;
+}
+body > h3:first-child,
+body > h4:first-child,
+body > h5:first-child,
+body > h6:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+a:first-child h1,
+a:first-child h2,
+a:first-child h3,
+a:first-child h4,
+a:first-child h5,
+a:first-child h6 {
+    margin-top: 0;
+    padding-top: 0;
+}
+h1 p,
+h2 p,
+h3 p,
+h4 p,
+h5 p,
+h6 p {
+    margin-top: 0;
+}
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    color: #26344A;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: subpixel-antialiased;
+    /*-webkit-text-stroke: 0.45px;
+    // or*/
+    -webkit-text-stroke: 0.45px rgba(38, 52, 74, 0.97);
+    border-left: 3.5px solid #DD4C4F;
+    margin-left: -1em;
+    padding: 0.2em 1em;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border-top: 1px solid #cccccc;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n) {
+    background-color: #f8f8f8;
+}
+table tr th {
+    font-weight: bold;
+    border: 1px solid #cccccc;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr td {
+    border: 1px solid #cccccc;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr th:first-child,
+table tr td:first-child {
+    margin-top: 0;
+}
+table tr th:last-child,
+table tr td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-gutters {
+    border-right: 1px solid #ddd;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    padding: 0;
+    font-family: 'OfficeCodePro', monospace;
+    padding: 2px 4px 0px 4px;
+    font-size: 17px;
+}
+
+.md-fences {
+    font-family: 'OfficeCodePro', monospace;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding: 0.2em 1em;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+.task-list{
+    padding-left: 0;
+}
+
+.task-list-item {
+    padding-left:32px;
+}
+
+.task-list-item input {
+  top: 3px;
+  left: 8px;
+}
+
+@media screen and (min-width: 914px) {
+    /*body {
+        width: 854px;
+        margin: 0 auto;
+    }*/
+}
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+    background-color: #E5E7EA;
+}
+#write pre.md-meta-block {
+    padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+    bottom: .375rem;
+}
+
+#write>h3.md-focus:before{
+    left: -1.5625rem;
+    top: .375rem;
+}
+#write>h4.md-focus:before{
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+#write>h5.md-focus:before{
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+#write>h6.md-focus:before{
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+.md-image>.md-meta {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag{
+    color: inherit;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#md-notification:before {
+    top: 10px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Lyon Display", sans-serif;
+}
+
+.CodeMirror {
+    /* Set height, width, borders, and global font properties here */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: subpixel-antialiased;
+    /*-webkit-text-stroke: 0.45px;
+    // or*/
+    font-family: 'OfficeCodePro', monospace;
+    font-size: 1.000em;
+}
+
+
+
+
+
+</style><title>manifoldPG</title>
+</head>
+<body class='typora-export os-windows'><div class='typora-export-content'>
+<div id='write'  class=''><h1 id='manifold-path-guiding-for-importance-sampling-specular-chains'><span>Manifold Path Guiding for Importance Sampling Specular Chains  </span></h1><p><strong><span>Zhimin Fan</span><span>*</span><span>, Pengpei Hong</span><span>*</span><span>, Jie Guo, Changqing Zou, Yanwen Guo, and Ling-Qi Yan</span></strong><span></span><br/><em><span>ACM Transactions on Graphics (Proceedings of SIGGRAPH ASIA 2023)</span></em><span></span><br/><span>[Paper] [Supplementary] [Code]  </span></p><hr /><h2 id='abstract'><span>Abstract  </span></h2><p><span>Complex visual effects such as caustics are often produced by light paths containing multiple consecutive specular vertices (dubbed </span><strong><span>specular chains</span></strong><span>), which pose a challenge to unbiased estimation in Monte Carlo rendering. In this work:  </span></p><ul><li><span>We analyze light transport behavior within sub-paths containing specular chains and non-specular separators.  </span></li><li><span>We leverage </span><strong><span>specular manifolds</span></strong><span> to reconstruct continuous energy distributions from historical/coherent sub-paths.  </span></li><li><span>We propose </span><strong><span>manifold path guiding</span></strong><span>, a progressive pipeline to importance sample paths with long specular chains via seed chain generation and manifold walks.  </span></li></ul><p><span>Our method achieves </span><strong><span>up to 40× variance reduction</span></strong><span> compared to state-of-the-art unbiased methods, particularly in scenes with long specular chains and complex visibility.  </span></p><h2 id='the-challenge-of-specular-chains'><span>The Challenge of Specular Chains  </span></h2><p><span>Several common scenes still lack effective sampling strategies for handling light paths with </span><strong><span>multiple consecutive specular/near-specular scattering events</span></strong><span> (e.g., curved metals, water, glass). These paths cause severe convergence issues in physically-based rendering due to:  </span></p><ul><li><span>The difficulty of finding </span><strong><span>valid path samples</span></strong><span> that satisfy physical constraints at specular vertices.</span></li><li><span>High dimensionality and discrete nature of admissible specular chain spaces.  </span></li></ul><p><span>Limitations of Existing Approaches  </span></p><figure><table><thead><tr><th><span>Method</span></th><th><span>Shortcomings</span></th></tr></thead><tbody><tr><td><strong><span>MLT-based</span></strong></td><td><span>Struggles with SDS paths despite specialized mutations.</span></td></tr><tr><td><strong><span>Fitted Distributions</span></strong></td><td><span>Fail for pure specular cases (e.g., near point lights).</span></td></tr><tr><td><strong><span>Specular Manifold Sampling (SMS)</span></strong></td><td><span>Performance degrades for long chains; ignores energy distributions.</span></td></tr></tbody></table></figure><h2 id='our-solution-manifold-path-guiding'><span>Our Solution: Manifold Path Guiding  </span></h2><ul><li><span>Importance sample seed chains in a continuous space, then refine via </span><strong><span>manifold walks</span></strong><span> to converge to admissible chains.  </span></li><li><span>Exploit coherence in specular manifolds for dimensionality reduction.  </span></li><li><span>Use converged distributions for efficient sampling.  </span></li></ul><h2 id='key-figures'><span>Key figures</span></h2><p><img src="manifoldPG.assets/mpg_fig4.jpg" alt="mpg_fig4" style="zoom: 50%;" /></p><p><img src="manifoldPG.assets/mpg_fig5.jpg" alt="mpg_fig5" style="zoom: 50%;" /></p><p><img src="manifoldPG.assets/mpg_fig9.jpg" referrerpolicy="no-referrer" alt="mpg_fig9"></p><h2 id='citation'><span>Citation  </span></h2><pre class="md-fences md-end-block ty-contain-cm modeLoaded" spellcheck="false" lang="bibtex"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="bibtex"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 16.3595px; left: 3.99742px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">@article{Fan23MPG,</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  title &nbsp; &nbsp; = {Manifold Path Guiding for Importance Sampling Specular Chains},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  author &nbsp;  = {Fan, Zhimin and Hong, Pengpei and Guo, Jie and Zou, Changqing and Guo, Yanwen and Yan, Ling-Qi},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  journal &nbsp; = {ACM Trans. Graph.},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  volume &nbsp;  = {42},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  number &nbsp;  = {6},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  year &nbsp; &nbsp;  = {2023},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  month &nbsp; &nbsp; = {Dec},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  issue_date= {December 2023},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  articleno = {257},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  numpages  = {14}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 551px;"></div><div class="CodeMirror-gutters" style="display: none; height: 551px;"></div></div></div></pre></div></div>
 </body>
 </html>
