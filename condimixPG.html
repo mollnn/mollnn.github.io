@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditional Mixture Path Guiding</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        /* 样式调整 */
+        .vert-offset-top-1 { margin-top: 1rem; }
+        .vert-offset-bottom-1 { margin-bottom: 1rem; }
+        .img-fluid { max-width: 100%; height: auto; }
+        .main-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .author-info {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+        .author-info a {
+            text-decoration: none;
+        }
+        .teaser-image {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        hr {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .key-figures img {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 大标题 -->
+        <div class="main-title">
+            Conditional Mixture Path Guiding for Differentiable Rendering
+        </div>
+
+        <!-- 作者信息 -->
+        <div class="author-info">
+            <p>
+                <b>Zhimin Fan</b>, Pengcheng Shi, Mufan Guo, Ruoyu Fu, Yanwen Guo, Jie Guo<br>
+                <i>ACM Transactions on Graphics (Proceedings of SIGGRAPH 2024)</i><br>
+                <a href="paper/conditional_mixture_preprint.pdf">[Paper]</a>
+                <a href="paper/conditional_mixture_slides.pdf">[Slides]</a>
+                <a href="https://github.com/mollnn/conditional-mixture">[Code]</a>
+            </p>
+        </div>
+
+        <!-- 展示图 -->
+        <div class="teaser-image">
+            <img src="imgs/conditional_mixture_1000p.jpg" alt="Conditional Mixture Path Guiding" class="img-fluid" width="720" height="480">
+        </div>
+
+        <hr>
+
+        <!-- Abstract -->
+        <p>
+            The efficiency of inverse optimization in physically based differentiable rendering heavily depends on the variance of Monte Carlo estimation. Despite recent advancements emphasizing the necessity of tailored differential sampling strategies, the general approaches remain unexplored.
+            In this paper, we investigate the interplay between local sampling decisions and the estimation of light path derivatives. Considering that modern differentiable rendering algorithms share the same path for estimating differential radiance and ordinary radiance, we demonstrate that conventional guiding approaches, conditioned solely on the last vertex, cannot attain this density. Instead, a mixture of different sampling distributions is required, where the weights are conditioned on all the previously sampled vertices in the path. To embody our theory, we implement a conditional mixture path guiding that explicitly computes optimal weights on the fly. Furthermore, we show how to perform positivization to eliminate sign variance and extend to scenes with millions of parameters.
+            To the best of our knowledge, this is the first generic framework for applying path guiding to differentiable rendering. Extensive experiments demonstrate that our method achieves nearly one order of magnitude improvements over state-of-the-art methods in terms of variance reduction in gradient estimation and errors of inverse optimization. The implementation of our proposed method is available at <a href="https://github.com/mollnn/conditional-mixture">https://github.com/mollnn/conditional-mixture</a>.
+        </p>
+
+        <!-- Citation -->
+        <h2>Citation</h2>
+        <pre>
+@article{10.1145/3658133,
+  author    = {Fan, Zhimin and Shi, Pengcheng and Guo, Mufan and Fu, Ruoyu and Guo, Yanwen and Guo, Jie},
+  title     = {Conditional Mixture Path Guiding for Differentiable Rendering},
+  year      = {2024},
+  issue_date= {July 2024},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  volume    = {43},
+  number    = {4},
+  issn      = {0730-0301},
+  url       = {https://doi.org/10.1145/3658133},
+  doi       = {10.1145/3658133},
+  abstract  = {The efficiency of inverse optimization in physically based differentiable rendering heavily depends on the variance of Monte Carlo estimation. Despite recent advancements emphasizing the necessity of tailored differential sampling strategies, the general approaches remain unexplored.In this paper, we investigate the interplay between local sampling decisions and the estimation of light path derivatives. Considering that modern differentiable rendering algorithms share the same path for estimating differential radiance and ordinary radiance, we demonstrate that conventional guiding approaches, conditioned solely on the last vertex, cannot attain this density. Instead, a mixture of different sampling distributions is required, where the weights are conditioned on all the previously sampled vertices in the path. To embody our theory, we implement a conditional mixture path guiding that explicitly computes optimal weights on the fly. Furthermore, we show how to perform positivization to eliminate sign variance and extend to scenes with millions of parameters.To the best of our knowledge, this is the first generic framework for applying path guiding to differentiable rendering. Extensive experiments demonstrate that our method achieves nearly one order of magnitude improvements over state-of-the-art methods in terms of variance reduction in gradient estimation and errors of inverse optimization. The implementation of our proposed method is available at https://github.com/mollnn/conditional-mixture.},
+  journal   = {ACM Trans. Graph.},
+  month     = jul,
+  articleno = {48},
+  numpages  = {11},
+  keywords  = {path guiding, differentiable rendering}
+}
+        </pre>
+    </div>
+</body>
+</html>

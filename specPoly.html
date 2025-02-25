@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specular Polynomials</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        /* 样式调整 */
+        .vert-offset-top-1 { margin-top: 1rem; }
+        .vert-offset-bottom-1 { margin-bottom: 1rem; }
+        .img-fluid { max-width: 100%; height: auto; }
+        .main-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .author-info {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+        .author-info a {
+            text-decoration: none;
+        }
+        .teaser-image {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        hr {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .key-figures img {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 大标题 -->
+        <div class="main-title">
+            Specular Polynomials
+        </div>
+
+        <!-- 作者信息 -->
+        <div class="author-info">
+            <p>
+                <b>Zhimin Fan</b>, Jie Guo, Yiming Wang, Tianyu Xiao, Hao Zhang, Chenxi Zhou, Zhenyu Chen, 
+                <a href="https://www.pommpy.net/">Pengpei Hong</a>, Yanwen Guo, 
+                <a href="https://sites.cs.ucsb.edu/~lingqi/">Ling-Qi Yan</a><br>
+                <i>ACM Transactions on Graphics (Proceedings of SIGGRAPH 2024)</i><br>
+                <a href="paper/spoly_preprint.pdf">[Paper]</a>
+                <a href="paper/spoly_preprint_supp.pdf">[Supplementary]</a>
+                <a href="paper/spoly_slides.pdf">[Slides]</a>
+                <a href="https://github.com/mollnn/spoly">[Code]</a>
+            </p>
+        </div>
+        <div class="teaser-image">
+            <img src="imgs/SPoly_teaser_1080p.jpg" alt="Conditional Mixture Path Guiding" class="img-fluid" width="720" height="480">
+        </div>
+
+        <hr>
+
+        <!-- Abstract -->
+        <p>
+            Finding valid light paths that involve specular vertices in Monte Carlo rendering requires solving many non-linear, transcendental equations in high-dimensional space. Existing approaches heavily rely on Newton iterations in path space, which are limited to obtaining at most a single solution each time and easily diverge when initialized with improper seeds.
+            We propose specular polynomials, a Newton iteration-free methodology for finding a complete set of admissible specular paths connecting two arbitrary endpoints in a scene. The core is a reformulation of specular constraints into polynomial systems, which makes it possible to reduce the task to a univariate root-finding problem. We first derive bivariate systems utilizing rational coordinate mapping between the coordinates of consecutive vertices. Subsequently, we adopt the hidden variable resultant method for variable elimination, converting the problem into finding zeros of the determinant of univariate matrix polynomials. This can be effectively solved through Laplacian expansion for one bounce and a bisection solver for more bounces.
+            Our solution is generic, completely deterministic, accurate for the case of one bounce, and GPU-friendly. We develop efficient CPU and GPU implementations and apply them to challenging glints and caustic rendering. Experiments on various scenarios demonstrate the superiority of specular polynomial-based solutions compared to Newton iteration-based counterparts. Our implementation is available at <a href="https://github.com/mollnn/spoly">https://github.com/mollnn/spoly</a>.
+        </p>
+
+        <!-- Citation -->
+        <h2>Citation</h2>
+        <pre>
+@article{10.1145/3658132,
+  author    = {Fan, Zhimin and Guo, Jie and Wang, Yiming and Xiao, Tianyu and Zhang, Hao and Zhou, Chenxi and Chen, Zhenyu and Hong, Pengpei and Guo, Yanwen and Yan, Ling-Qi},
+  title     = {Specular Polynomials},
+  year      = {2024},
+  issue_date= {July 2024},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  volume    = {43},
+  number    = {4},
+  issn      = {0730-0301},
+  url       = {https://doi.org/10.1145/3658132},
+  doi       = {10.1145/3658132},
+  abstract  = {Finding valid light paths that involve specular vertices in Monte Carlo rendering requires solving many non-linear, transcendental equations in high-dimensional space. Existing approaches heavily rely on Newton iterations in path space, which are limited to obtaining at most a single solution each time and easily diverge when initialized with improper seeds.We propose specular polynomials, a Newton iteration-free methodology for finding a complete set of admissible specular paths connecting two arbitrary endpoints in a scene. The core is a reformulation of specular constraints into polynomial systems, which makes it possible to reduce the task to a univariate root-finding problem. We first derive bivariate systems utilizing rational coordinate mapping between the coordinates of consecutive vertices. Subsequently, we adopt the hidden variable resultant method for variable elimination, converting the problem into finding zeros of the determinant of univariate matrix polynomials. This can be effectively solved through Laplacian expansion for one bounce and a bisection solver for more bounces.Our solution is generic, completely deterministic, accurate for the case of one bounce, and GPU-friendly. We develop efficient CPU and GPU implementations and apply them to challenging glints and caustic rendering. Experiments on various scenarios demonstrate the superiority of specular polynomial-based solutions compared to Newton iteration-based counterparts. Our implementation is available at https://github.com/mollnn/spoly.},
+  journal   = {ACM Trans. Graph.},
+  month     = jul,
+  articleno = {126},
+  numpages  = {13},
+  keywords  = {specular chain, polynomial, caustics, glints}
+}
+        </pre>
+    </div>
+</body>
+</html>
