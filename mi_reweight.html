@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Importance Reweighting for Path Guiding</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        /* 样式调整 */
+        .vert-offset-top-1 { margin-top: 1rem; }
+        .vert-offset-bottom-1 { margin-bottom: 1rem; }
+        .img-fluid { max-width: 100%; height: auto; }
+        .main-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .author-info {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+        .author-info a {
+            text-decoration: none;
+        }
+        .teaser-image {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        hr {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .key-figures img {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 大标题 -->
+        <div class="main-title">
+            Multiple Importance Reweighting for Path Guiding
+        </div>
+
+        <!-- 作者信息 -->
+        <div class="author-info">
+            <p>
+                <b>Zhimin Fan</b>, Yiming Wang, Chenxi Zhou, 
+                <a href="https://sites.cs.ucsb.edu/~lingqi/">Ling-Qi Yan</a>, Yanwen Guo, Jie Guo<br>
+                <i>ACM Transactions on Graphics (Proceedings of SIGGRAPH 2025)</i><br>
+                <a href="paper/mi_reweight_preprint.pdf">[Paper]</a>
+                <a href="paper/mi_reweight_preprint_supp.pdf">[Supplementary]</a>
+                [Slides]
+                <a href="https://github.com/mollnn/multiple-importance-reweight">[Code]</a>
+            </p>
+        </div>
+        <div class="teaser-image">
+            <img src="imgs/mi_reweight.jpg" alt="Multiple Importance Reweighting for Path Guiding" class="img-fluid" width="720" height="480">
+        </div>
+
+        <hr>
+
+        <!-- Abstract -->
+        <p>
+            Contemporary path guiding employs an iterative training scheme to fit radiance distributions. However, existing methods combine the estimates generated in each iteration merely within image space, overlooking differences in the convergence of distribution fitting over individual light paths.
+        </p>
+        <p>
+            This paper formulates the estimation combination task as a path reweighting process. To compute spatio-directional varying combination weights, we propose multiple importance reweighting, leveraging the importance distributions from multiple guiding iterations. We demonstrate that our proposed path-level reweighting makes guiding algorithms less sensitive to noise and overfitting in distributions. This facilitates a finer subdivision of samples both spatially and temporally (i.e., over iterations), which leads to additional improvements in the accuracy of distributions and samples.
+        </p>
+        <p>
+            Inspired by adaptive multiple importance sampling (AMIS), we introduce a simple yet effective mixture-based weighting scheme with theoretically guaranteed consistency, demonstrating good practical performance compared to alternative weighting schemes. To further foster usage with high sample rates, we introduce a hyperparameter that controls the size of sample storage. When this size limit is exceeded, low-valued samples are splatted during rendering and reweighted using a partial mixture of distributions. We found limiting the storage size reduces memory overhead and keeps variance reduction and bias comparable to the unlimited ones.
+        </p>
+        <p>
+            Our method is largely agnostic to the underlying guiding method and compatible with conventional pixel reweighting techniques. Extensive evaluations underscore the feasibility of our approach in various scenes, achieving variance reduction with negligible bias over state-of-the-art solutions within equal sample rates and rendering time.
+        </p>
+
+        <!-- Citation -->
+        <h2>Citation</h2>
+        <pre>
+TBA
+        </pre>
+    </div>
+</body>
+</html> 
