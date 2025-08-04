@@ -6,7 +6,6 @@
     <title>Multiple Importance Reweighting for Path Guiding</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
-        /* 样式调整 */
         .vert-offset-top-1 { margin-top: 1rem; }
         .vert-offset-bottom-1 { margin-bottom: 1rem; }
         .img-fluid { max-width: 100%; height: auto; }
@@ -45,12 +44,10 @@
 </head>
 <body>
     <div class="container">
-        <!-- 大标题 -->
         <div class="main-title">
             Multiple Importance Reweighting for Path Guiding
         </div>
 
-        <!-- 作者信息 -->
         <div class="author-info">
             <p>
                 <b>Zhimin Fan</b>, Yiming Wang, Chenxi Zhou, 
@@ -85,7 +82,25 @@
         <!-- Citation -->
         <h2>Citation</h2>
         <pre>
-TBA
+@article{10.1145/3731144,
+author = {Fan, Zhimin and Wang, Yiming and Zhou, Chenxi and Yan, Ling-Qi and Guo, Yanwen and Guo, Jie},
+title = {Multiple Importance Reweighting for Path Guiding},
+year = {2025},
+issue_date = {August 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {44},
+number = {4},
+issn = {0730-0301},
+url = {https://doi.org/10.1145/3731144},
+doi = {10.1145/3731144},
+abstract = {Contemporary path guiding employs an iterative training scheme to fit radiance distributions. However, existing methods combine the estimates generated in each iteration merely within image space, overlooking differences in the convergence of distribution fitting over individual light paths.This paper formulates the estimation combination task as a path reweighting process. To compute spatio-directional varying combination weights, we propose multiple importance reweighting, leveraging the importance distributions from multiple guiding iterations. We demonstrate that our proposed path-level reweighting makes guiding algorithms less sensitive to noise and overfitting in distributions. This facilitates a finer subdivision of samples both spatially and temporally (i.e., over iterations), which leads to additional improvements in the accuracy of distributions and samples.Inspired by adaptive multiple importance sampling (AMIS), we introduce a simple yet effective mixture-based weighting scheme with theoretically guaranteed consistency, demonstrating good practical performance compared to alternative weighting schemes. To further foster usage with high sample rates, we introduce a hyperparameter that controls the size of sample storage. When this size limit is exceeded, low-valued samples are splatted during rendering and reweighted using a partial mixture of distributions. We found limiting the storage size reduces memory overhead and keeps variance reduction and bias comparable to the unlimited ones.Our method is largely agnostic to the underlying guiding method and compatible with conventional pixel reweighting techniques. Extensive evaluations underscore the feasibility of our approach in various scenes, achieving variance reduction with negligible bias over state-of-the-art solutions within equal sample rates and rendering time.},
+journal = {ACM Trans. Graph.},
+month = jul,
+articleno = {99},
+numpages = {11},
+keywords = {path guiding}
+}
         </pre>
     </div>
 </body>

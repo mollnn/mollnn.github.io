@@ -6,7 +6,6 @@
     <title>Bernstein Bounds for Caustics</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
-        /* 样式调整 */
         .vert-offset-top-1 { margin-top: 1rem; }
         .vert-offset-bottom-1 { margin-bottom: 1rem; }
         .img-fluid { max-width: 100%; height: auto; }
@@ -45,12 +44,10 @@
 </head>
 <body>
     <div class="container">
-        <!-- 大标题 -->
         <div class="main-title">
             Bernstein Bounds for Caustics
         </div>
 
-        <!-- 作者信息 -->
         <div class="author-info">
             <p>
                 <b>Zhimin Fan</b>, Chen Wang, Yiming Wang, Boxuan Li, Yuxuan Guo, 
@@ -69,7 +66,6 @@
 
         <hr>
 
-        <!-- Abstract -->
         <p>
             Systematically simulating specular light transport requires an exhaustive search for primitive tuples containing admissible paths. Given the extreme inefficiency of enumerating all combinations, we propose to significantly reduce the search domain by sampling such tuples. The challenge is to design proper sampling probabilities that keep the noise level controllable. Our key insight is that by bounding the range of irradiance contributed by each primitive tuple at a given position, we can sample a subset of primitive tuples with potentially high contributions. Although low-contribution tuples are assigned a negligible probability, the overall variance remains low.
         </p>
@@ -77,10 +73,27 @@
             Therefore, we derive vertex position and irradiance bounds for each primitive tuple, introducing a bounding property of rational functions on the Bernstein basis. When formulating position and irradiance expressions into rational functions, we handle non-rational components through remainder variables to maintain validity. Finally, we carefully design the sampling probabilities by optimizing the upper bound of the variance, expressed only using the position and irradiance bound. The proposed primitive sampling is intrinsically unbiased. It can be seamlessly combined with various unbiased and biased root-finding techniques within a local primitive domain. Extensive evaluations show that our method enables fast and reliable rendering of complex caustic effects.
         </p>
 
-        <!-- Citation -->
         <h2>Citation</h2>
         <pre>
-TBA
+@article{10.1145/3731145,
+author = {Fan, Zhimin and Wang, Chen and Wang, Yiming and Li, Boxuan and Guo, Yuxuan and Yan, Ling-Qi and Guo, Yanwen and Guo, Jie},
+title = {Bernstein Bounds for Caustics},
+year = {2025},
+issue_date = {August 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {44},
+number = {4},
+issn = {0730-0301},
+url = {https://doi.org/10.1145/3731145},
+doi = {10.1145/3731145},
+abstract = {Systematically simulating specular light transport requires an exhaustive search for triangle tuples containing admissible paths. Given the extreme inefficiency of enumerating all combinations, we significantly reduce the search domain by stochastically sampling such tuples. The challenge is to design proper sampling probabilities that keep the noise level controllable. Our key insight is that by bounding the irradiance contributed by each triangle tuple at a given position, we can sample a subset of triangle tuples with potentially high contributions. Although low-contribution tuples are assigned a negligible probability, the overall variance remains low.Therefore, we derive position and irradiance bounds for caustics casted by each triangle tuple, introducing a bounding property of rational functions on a Bernstein basis. When formulating position and irradiance expressions into rational functions, we handle non-rational parts through remainder variables to maintain bounding validity. Finally, we carefully design the sampling probabilities by optimizing the upper bound of the variance, expressed only using the position and irradiance bounds.The bound-driven sampling of triangle tuples is intrinsically unbiased even without defensive sampling. It can be combined with various unbiased and biased root-finding techniques within a local triangle domain. Extensive evaluations show that our method enables the fast and reliable rendering of complex caustics effects. Yet, our method is efficient for no more than two specular vertices, where complexity grows sublinearly to the number of triangles and linearly to that of emitters, and does not consider the Fresnel and visibility terms. We also rely on parameters to control subdivisions.},
+journal = {ACM Trans. Graph.},
+month = jul,
+articleno = {63},
+numpages = {15},
+keywords = {specular, caustics}
+}
         </pre>
     </div>
 </body>
